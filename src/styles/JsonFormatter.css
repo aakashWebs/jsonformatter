@@ -1,0 +1,501 @@
+/* styles/JsonFormatter.css */
+
+:root {
+    /* Premium Light Theme */
+    --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    /* Subtle, clean grey-white */
+    --panel-bg: #ffffff;
+    --text-color: #2d3748;
+    /* Deep charcoal for better readability */
+    --text-secondary: #718096;
+    --text-muted: #a0aec0;
+    --border-color: rgba(0, 0, 0, 0.06);
+
+    /* Sophisticated Header Gradient (Deep Indigo/Purple) */
+    --header-bg: linear-gradient(120deg, #667eea 0%, #764ba2 100%);
+    --header-text: #ffffff;
+
+    --control-bg: #f7fafc;
+    --shadow-color: rgba(0, 0, 0, 0.08);
+    /* Softer shadow */
+
+    /* Buttons */
+    --btn-primary-bg: #ffffff;
+    --btn-primary-text: #667eea;
+    --btn-primary-hover: #edf2f7;
+
+    --btn-secondary-bg: rgba(255, 255, 255, 0.15);
+    --btn-secondary-border: rgba(255, 255, 255, 0.3);
+    --btn-secondary-hover: rgba(255, 255, 255, 0.25);
+
+    /* JSON Highlight Colors (Premium Light) */
+    --json-key: #d04343;
+    /* Muted Red */
+    --json-string: #2b6cb0;
+    /* Strong Blue */
+    --json-number: #d69e2e;
+    /* Golden */
+    --json-boolean: #38a169;
+    /* Emerald */
+    --json-null: #718096;
+    /* Grey */
+}
+
+[data-theme='dark'] {
+    /* Premium Dark Theme */
+    --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    /* Deep Slate/Midnight */
+    --panel-bg: #1e293b;
+    /* Dark Slate */
+    --text-color: #e2e8f0;
+    /* Off-white */
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --border-color: rgba(255, 255, 255, 0.08);
+
+    /* Dark Mode Header (Subtle Gradient) */
+    --header-bg: linear-gradient(to right, #373b44, #4286f4);
+    /* Dark Grey to Blue */
+    --header-text: #ffffff;
+    --control-bg: #334155;
+    --shadow-color: rgba(0, 0, 0, 0.4);
+
+    /* Buttons */
+    --btn-primary-bg: #4286f4;
+    --btn-primary-text: #ffffff;
+    --btn-primary-hover: #3b76d8;
+
+    --btn-secondary-bg: rgba(255, 255, 255, 0.08);
+    --btn-secondary-border: rgba(255, 255, 255, 0.1);
+    --btn-secondary-hover: rgba(255, 255, 255, 0.12);
+
+    /* JSON Highlight Colors (Premium Dark) */
+    --json-key: #fc8181;
+    /* Soft Red */
+    --json-string: #90cdf4;
+    /* Soft Blue */
+    --json-number: #f6ad55;
+    /* Soft Orange */
+    --json-boolean: #68d391;
+    /* Soft Green */
+    --json-null: #a0aec0;
+}
+
+body,
+#root {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-gradient);
+    color: var(--text-color);
+}
+
+.json-formatter {
+    max-width: 100%;
+    margin: 0;
+    padding: 10px 20px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.json-formatter h1 {
+    text-align: left;
+    color: var(--text-color);
+    margin: 0 0 10px 0;
+    font-size: 1.5rem;
+}
+
+.btn {
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.btn:hover:not(:disabled) {
+    opacity: 1;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.btn-primary {
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+}
+
+.btn-primary:hover {
+    background: var(--btn-primary-hover);
+}
+
+.btn-secondary {
+    background: var(--btn-secondary-bg);
+    color: var(--header-text);
+    border: 1px solid var(--btn-secondary-border);
+}
+
+.btn-secondary:hover {
+    background: var(--btn-secondary-hover);
+}
+
+.btn-danger {
+    background: #ff6b6b;
+    color: white;
+}
+
+.btn-success {
+    background: #51cf66;
+    color: white;
+}
+
+.header-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 13px;
+    border-radius: 4px;
+}
+
+.indent-control-sm select {
+    padding: 4px 8px;
+    border: 1px solid var(--btn-secondary-border);
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    background: var(--btn-secondary-bg);
+    color: var(--header-text);
+}
+
+.indent-control-sm select option {
+    background: var(--panel-bg);
+    color: var(--text-color);
+}
+
+.error-message {
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.formatter-panels {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    transition: all 0.3s ease;
+    flex: 1;
+    min-height: 0;
+    padding-bottom: 10px;
+}
+
+.json-formatter.input-mode .formatter-panels,
+.json-formatter.output-mode .formatter-panels {
+    grid-template-columns: 1fr;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background: var(--header-bg);
+    border-bottom: 1px solid var(--border-color);
+    color: var(--header-text);
+}
+
+.json-panel h3 {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.btn-expand {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+}
+
+.btn-expand:hover {
+    background: var(--control-bg);
+    color: var(--text-color);
+    border-color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+    .header-controls {
+        flex-wrap: wrap;
+    }
+}
+
+.json-panel {
+    display: flex;
+    flex-direction: column;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--panel-bg);
+    height: 100%;
+    box-shadow: 0 4px 6px -1px var(--shadow-color), 0 2px 4px -1px var(--shadow-color);
+}
+
+.json-textarea {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    resize: none;
+    outline: none;
+    background: var(--panel-bg);
+    color: var(--text-color);
+}
+
+/* Syntax Highlighting & Tree View */
+.json-tree {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.json-line {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.json-block {
+    margin-left: 24px;
+    border-left: 1px solid var(--border-color);
+    padding-left: 4px;
+}
+
+.json-brace {
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--text-secondary);
+    user-select: none;
+}
+
+.json-brace:hover {
+    color: var(--text-color);
+}
+
+.json-collapser {
+    cursor: pointer;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+    text-align: center;
+    margin-right: 4px;
+    color: var(--text-secondary);
+    font-size: 12px;
+    user-select: none;
+    transition: transform 0.1s;
+}
+
+.json-collapser:hover {
+    color: var(--text-color);
+}
+
+/* Separator in header */
+.separator {
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0 5px;
+}
+
+/* URL Input Bar */
+.url-input-bar {
+    padding: 10px;
+    background: var(--control-bg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.url-input {
+    flex: 1;
+    padding: 6px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 14px;
+    background: var(--panel-bg);
+    color: var(--text-color);
+}
+
+/* Drag & Drop */
+.textarea-container {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.drag-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 123, 255, 0.1);
+    border: 2px dashed #007bff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: #007bff;
+    font-weight: bold;
+    pointer-events: none;
+    z-index: 10;
+    backdrop-filter: blur(2px);
+}
+
+.json-panel.drag-active {
+    border-color: #007bff;
+}
+
+.json-ellipsis {
+    cursor: pointer;
+    color: var(--text-muted);
+    background: var(--border-color);
+    border-radius: 3px;
+    padding: 0 4px;
+    margin: 0 4px;
+    font-size: 12px;
+    user-select: none;
+}
+
+/* Search Bar */
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.search-bar input {
+    border: none;
+    outline: none;
+    font-size: 13px;
+    background: transparent;
+    color: white;
+}
+
+.search-bar input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.filter-toggle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    color: white;
+    user-select: none;
+}
+
+/* Highlight Match */
+.highlight-match {
+    background-color: rgba(255, 235, 59, 0.3);
+}
+
+/* Metadata & Type Badges */
+.type-badge {
+    font-size: 10px;
+    color: var(--text-muted);
+    background: var(--border-color);
+    /* Use border color for subtle background */
+    padding: 0 4px;
+    border-radius: 3px;
+    margin-left: 8px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
+
+.json-line:hover .type-badge {
+    opacity: 1;
+}
+
+.json-meta-summary {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin: 0 4px;
+    cursor: pointer;
+}
+
+.json-meta-summary:hover {
+    color: var(--text-secondary);
+}
+
+.type-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-left: 8px;
+}
+
+.json-key {
+    color: var(--json-key);
+}
+
+.json-string {
+    color: var(--json-string);
+}
+
+.json-number {
+    color: var(--json-number);
+}
+
+.json-boolean {
+    color: var(--json-boolean);
+}
+
+.json-null {
+    color: var(--json-null);
+}
+
+.json-output {
+    flex: 1;
+    padding: 15px;
+    overflow: auto;
+    background: var(--panel-bg);
+}
+
+.json-output pre {
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.placeholder {
+    color: var(--text-muted);
+    font-style: italic;
+    text-align: center;
+    padding: 50px 20px;
+}
