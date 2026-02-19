@@ -9,7 +9,10 @@ const JsonInput = ({
     indentSize,
     setIndentSize,
     darkMode,
-    toggleTheme
+    toggleTheme,
+    onSave,
+    onShowSnippets,
+    snippetCount
 }) => {
     const fileInputRef = useRef(null);
     const [url, setUrl] = useState('');
@@ -69,7 +72,7 @@ const JsonInput = ({
     return (
         <div className={`json-panel ${dragActive ? 'drag-active' : ''}`} onDragEnter={handleDrag}>
             <div className="panel-header">
-                <h3>JSON Formatter</h3>
+                <h3>JSON Input</h3>
                 <div className="header-controls">
                     <button onClick={() => fileInputRef.current.click()} className="btn btn-secondary btn-sm" title="Upload File">
                         📂 Upload
@@ -91,6 +94,23 @@ const JsonInput = ({
                     <button onClick={onFormat} className="btn btn-primary btn-sm">Format</button>
                     <button onClick={onMinify} className="btn btn-secondary btn-sm">Minify</button>
                     <button onClick={onClear} className="btn btn-danger btn-sm">Clear</button>
+
+                    <span className="separator">|</span>
+
+                    <button
+                        onClick={onSave}
+                        className="btn btn-sm btn-save"
+                        title="Save current JSON as a named snippet"
+                    >
+                        💾 Save
+                    </button>
+                    <button
+                        onClick={onShowSnippets}
+                        className="btn btn-sm btn-snippets"
+                        title="Browse saved JSON snippets"
+                    >
+                        📚 Snippets{snippetCount > 0 && <span className="snippet-badge">{snippetCount}</span>}
+                    </button>
                     <div className="indent-control-sm">
                         <select
                             value={indentSize}

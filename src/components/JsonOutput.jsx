@@ -3,7 +3,6 @@ import React, { useState, useMemo } from 'react';
 const JsonOutput = ({
     value,
     onCopy,
-    onEditOriginal,
     onEditResult,
     onDownload,
     darkMode,
@@ -79,7 +78,7 @@ const JsonOutput = ({
     return (
         <div className="json-panel">
             <div className="panel-header">
-                <h3>JSON Formatter</h3>
+                <h3>Formatted Output</h3>
 
                 {/* Search & Path Controls */}
                 <div style={{ display: 'flex', gap: '10px', flex: 1, padding: '0 20px' }}>
@@ -118,11 +117,8 @@ const JsonOutput = ({
                 </div>
 
                 <div className="header-controls">
-                    <button onClick={onEditOriginal} className="btn btn-secondary btn-sm">
-                        Back input
-                    </button>
-                    <button onClick={onEditResult} className="btn btn-primary btn-sm">
-                        Edit
+                    <button onClick={onEditResult} className="btn btn-primary btn-sm" disabled={!value} title="Use formatted JSON as new input">
+                        ↩ Use as Input
                     </button>
                     <button onClick={onDownload} className="btn btn-secondary btn-sm" disabled={!value} title="Download JSON">
                         ⬇
